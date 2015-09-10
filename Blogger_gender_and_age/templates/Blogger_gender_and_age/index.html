@@ -1,0 +1,126 @@
+
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+
+<head>
+
+<!-- title and meta -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<meta name="description" content="A neat and simple tabbed content area with CSS and jQuery" />
+<title>Blogger Age and Gender</title>
+
+<!-- css -->
+<link href='http://fonts.googleapis.com/css?family=Ubuntu:300,400,700,400italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Oswald:400,300,700' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="{% static 'Blogger_gender_and_age/css/base.css' %}" />
+<link rel="stylesheet" href="{% static 'Blogger_gender_and_age/css/style.css' %}" />
+
+<!-- js -->
+<script src="{% static 'Blogger_gender_and_age/js/jquery-1.9.1.min.js' %}"></script>
+<script src="{% static 'Blogger_gender_and_age/js/modernizr.js' %}/"></script>
+<script src="{% static 'Blogger_gender_and_age/js/tabs.js' %}/"></script>
+
+
+</head>
+
+
+
+<body>
+
+<div id="wrapper">
+
+<div id="top-bar">
+    <div class="container clearfix">
+    </div>
+</div><!-- /#top-bar -->
+
+<header>
+    <div id="title" class="container">
+		<h1>Blogger AGP</h1>
+		<h2>Author age and gender prediction</h2>
+
+    </div>
+</header><!-- /header -->
+
+
+<div id="main">
+    <div class="container">
+        <ul id="tabs">
+            <li class="active">BlogURL</li>
+            <li>BlogID</li>
+            <li>Text</li>
+        </ul>
+        <ul id="tab">
+            <li class="active">
+                <h2>Predict blog author by BlogURL</h2>
+						<form name="myForm1" action="{% url 'Blogger_gender_and_age:result' %}" onsubmit="return validateForm()" method="post">
+							{% csrf_token %}
+                            <input type="text" name="BlogURL" value="Enter your BlogURL" onfocus="onFocus(this)" >
+							<input type="submit" value="Submit">
+						</form>
+
+				</li>
+            <li>
+                <h2>Predict blog author by BlogID</h2>
+						<form name="myForm2" action="{% url 'Blogger_gender_and_age:result' %}" onsubmit="return validateForm()" method="post">
+							{% csrf_token %}
+                            <input type="text" name="BlogID" value="Enter your BlogID" onfocus="onFocus(this)">
+							<input type="submit" value="Submit">
+						</form>
+
+				</li>
+
+            <li>
+                <h2>Predict text author</h2>
+						<form name="myForm4" action="{% url 'Blogger_gender_and_age:result' %}" onsubmit="return validateForm()" method="post">
+							{% csrf_token %}
+                            <textarea class="textbox" type="text" name="rawText" ></textarea><br>
+							<input type="submit" value="Submit">
+						</form>
+
+				</li>
+			<p id="alertmsg" style="color:red;">{{ msg }}</p>
+        </ul>
+    </div>
+</div><!-- #main -->
+
+
+<footer>
+</footer><!-- /footer -->
+
+
+
+</div><!-- /#wrapper -->
+
+<script>
+
+	function onBlur(el) {
+		if (el.value == '') {
+			el.value = el.defaultValue;
+		}
+	}
+	function onFocus(el) {
+		if (el.value == el.defaultValue) {
+			el.value = '';
+		}
+	}
+
+
+	function validateForm() {
+    var x = document.forms["myForm1"]["BlogURL"].value;
+	var y = document.forms["myForm2"]["BlogID"].value;
+        var w = document.forms["myForm4"]["rawText"].value;
+    if ((x == null || x == "") && (y == null || y == "") && (w == null || w == "")) {
+
+        alert("BlogURL must be filled out");
+		document.getElementById("alertmsg").innerHTML = "Empty field";
+        return false;
+    }
+}
+
+</script>
+</body>
+</html>
